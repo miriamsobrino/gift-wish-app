@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "gift-wish",
+    "name": "GiftWish",
     "slug": "gift-wish",
+    "scheme": "gift-wish",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,6 +13,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+
     "ios": {
       "supportsTablet": true
     },
@@ -23,7 +25,9 @@
       "edgeToEdgeEnabled": true
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": ["expo-router"]
   }
 }

@@ -5,4 +5,5 @@ export interface Wishlist {
   color: string;
   products?: [];
   totalPrice?: number;
+  onPress?: (title: string) => void;
 }

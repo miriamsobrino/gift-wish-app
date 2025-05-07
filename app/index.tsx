@@ -5,11 +5,17 @@ import { ThemedView } from '../components/ThemedView';
 import { WishlistCard } from '../components/WishlistCard';
 import { useWishListContext } from '../context/WishlistContext';
 import { FlatList } from 'react-native-gesture-handler';
+import { Wishlist } from '../types/types';
 
 export default function HomeScreen() {
   const { wishlists } = useWishListContext();
+
   const navigationToAddWishlistModal = () => {
     router.push('/add-wishlist');
+  };
+
+  const navigationToEditWishlistModal = (item: Wishlist) => {
+    router.push(`/add-wishlist?title=${item.title}`);
   };
   return (
     <ThemedView>
@@ -28,6 +34,7 @@ export default function HomeScreen() {
             title={item.title}
             emoji={item.emoji}
             color={item.color}
+            onPress={() => navigationToEditWishlistModal(item)}
           />
         )}
         contentContainerStyle={{

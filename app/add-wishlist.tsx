@@ -1,4 +1,4 @@
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { ThemedView } from '../components/ThemedView';
 import { ThemedButton } from '../components/ThemedButton';
 import { ThemedText } from '../components/ThemedText';
@@ -9,15 +9,18 @@ import { WISHLIST_COLORS } from '../constants/colors';
 import { useWishlistModal } from '../hooks/useWishlistModal';
 import { ColorPicker } from '../components/ColorPicker';
 import { EmojiPicker } from '../components/EmojiPicker';
+import { ThemedInput } from '../components/ThemedInput';
+import { useLocalSearchParams } from 'expo-router';
 
 export default function AddWishlistModal() {
+  const { title } = useLocalSearchParams();
   const {
     wishlistTitle,
-    emojiSelected,
+    selectedEmoji,
     selectedColor,
     isOpenEmojiModal,
+    setSelectedEmoji,
     setWishlistTitle,
-    setEmojiSelected,
     setSelectedColor,
     openEmojiModal,
     closeEmojiModal,
@@ -31,11 +34,13 @@ export default function AddWishlistModal() {
         <MaterialIcons name='close' size={28} color='black' />
       </Pressable>
       <View className='text-center flex justify-betweem gap-10 flex-1 items-center   h-[560px]'>
-        <ThemedText type='title'>Nueva Wishlist</ThemedText>
-        {emojiSelected && (
+        <ThemedText type='title'>
+          {title ? 'Editar Wishlist' : 'Nueva Wishlist'}
+        </ThemedText>
+        {selectedEmoji && (
           <EmojiPicker
             color={selectedColor}
-            emoji={emojiSelected}
+            emoji={selectedEmoji}
             onPress={openEmojiModal}
           />
         )}
@@ -43,7 +48,7 @@ export default function AddWishlistModal() {
           <Animated.View entering={FadeInUp.duration(500)}>
             <EmojiModal
               onEmojiSelected={(emoji) => {
-                setEmojiSelected(emoji ?? '');
+                setSelectedEmoji(emoji ?? '');
                 closeEmojiModal();
               }}
               modalStyle={{
@@ -61,22 +66,19 @@ export default function AddWishlistModal() {
           {WISHLIST_COLORS.map((color, index) => (
             <ColorPicker
               key={`${color}-${index}`}
+              isSelected={selectedColor === color}
               color={color}
-              index={index}
               onPress={() => setSelectedColor(color)}
             />
           ))}
         </View>
-        <TextInput
-          placeholder='Nombre de la Wishlist...'
-          placeholderTextColor='#a1a1a1'
-          value={wishlistTitle}
-          onChangeText={setWishlistTitle}
-          className='border-2  border-black rounded-md shadow-hard-black-small bg-background px-4  w-full text-xl  h-16 pb-2'
-        />
+
+        <ThemedInput value={wishlistTitle} onChangeText={setWishlistTitle} />
 
         <ThemedButton onPress={handleAddWishlist}>
-          <Text className='text-xl font-bold'>Crear Wishlist</Text>
+          <Text className='text-xl font-bold'>
+            {title ? 'Actualizar Wishlist' : 'Crear Wishlist'}
+          </Text>
         </ThemedButton>
       </View>
     </ThemedView>

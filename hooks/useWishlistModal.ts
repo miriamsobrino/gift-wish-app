@@ -1,15 +1,28 @@
-import { router } from 'expo-router';
-import { useState } from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { WISHLIST_COLORS } from '../constants/colors';
 import { useWishListContext } from '../context/WishlistContext';
 
 export const useWishlistModal = () => {
-  const [emojiSelected, setEmojiSelected] = useState('🎁');
-  const [isOpenEmojiModal, setIsOpenEmojiModal] = useState(false);
+  const { title } = useLocalSearchParams();
+  const { wishlists } = useWishListContext();
   const [wishlistTitle, setWishlistTitle] = useState('');
+  const [selectedEmoji, setSelectedEmoji] = useState('🎁');
   const [selectedColor, setSelectedColor] = useState(WISHLIST_COLORS[0]);
-
+  const [isOpenEmojiModal, setIsOpenEmojiModal] = useState(false);
   const { addWishlist } = useWishListContext();
+
+  useEffect(() => {
+    const wishlistTitle = Array.isArray(title) ? title[0] : title;
+    if (wishlistTitle) {
+      const wishlist = wishlists.find((w) => w.title === wishlistTitle);
+      if (wishlist) {
+        setWishlistTitle(wishlist.title);
+        setSelectedEmoji(wishlist.emoji);
+        setSelectedColor(wishlist.color);
+      }
+    }
+  }, [title]);
 
   const openEmojiModal = () => setIsOpenEmojiModal((prev) => !prev);
   const closeEmojiModal = () => setIsOpenEmojiModal(false);
@@ -17,15 +30,15 @@ export const useWishlistModal = () => {
 
   const handleAddWishlist = () => {
     if (!wishlistTitle.trim()) return alert('Debes introducir un título');
-    addWishlist(wishlistTitle, emojiSelected, selectedColor);
+    addWishlist(wishlistTitle, selectedEmoji, selectedColor);
   };
 
   return {
-    emojiSelected,
+    selectedEmoji,
     isOpenEmojiModal,
     wishlistTitle,
     selectedColor,
-    setEmojiSelected,
+    setSelectedEmoji,
     setWishlistTitle,
     setSelectedColor,
     openEmojiModal,

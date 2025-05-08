@@ -8,6 +8,7 @@ interface WishlistContextType {
   addWishlist: (title: string, emoji: string, color: string) => void;
   deleteWishlist: (id: string) => void;
   addProductToWishlist: (wishlistId: string, product: Product) => void;
+  deleteProduct: (wishlistId: string, productId: string) => void;
 }
 const WishlistContext = createContext({} as WishlistContextType);
 export const useWishlistContext = () => {
@@ -30,6 +31,12 @@ export const WishlistContextProvider = ({
     setWishlists([newWishlist, ...wishlists]);
     router.back();
   };
+
+  const deleteWishlist = (id: string) => {
+    const filteredWishlists = wishlists.filter((w) => w.id !== id);
+    setWishlists(filteredWishlists);
+  };
+
   const addProductToWishlist = (wishlistId: string, product: Product) => {
     setWishlists((prevWishlists) => {
       const newWishlist = prevWishlists.map((wishlist) =>
@@ -43,13 +50,22 @@ export const WishlistContextProvider = ({
       );
       return newWishlist;
     });
-    console.log('producto añadido');
+
     router.back();
   };
-
-  const deleteWishlist = (id: string) => {
-    const filteredWishlists = wishlists.filter((w) => w.id !== id);
-    setWishlists(filteredWishlists);
+  const deleteProduct = (wishlistId: string, productId: string) => {
+    setWishlists((prevWishlists) => {
+      return prevWishlists.map((wishlist) => {
+        if (wishlist.id === wishlistId) {
+          if (wishlist.products) {
+            wishlist.products = wishlist.products.filter(
+              (product) => product.id !== productId
+            );
+          }
+        }
+        return wishlist;
+      });
+    });
   };
   return (
     <WishlistContext.Provider
@@ -58,6 +74,7 @@ export const WishlistContextProvider = ({
         addWishlist,
         deleteWishlist,
         addProductToWishlist,
+        deleteProduct,
       }}
     >
       {children}

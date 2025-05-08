@@ -16,4 +16,6 @@ export interface Product {
   price: number;
   link: string;
   wishlistId: string;
+  isPurchased: boolean;
+  onDelete?: (id: string) => void;
 }

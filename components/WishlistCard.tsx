@@ -92,7 +92,6 @@ export function WishlistCard({
         transparent={true}
         visible={isOpenDeleteModal}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
           setIsOpenDeleteModal(!isOpenDeleteModal);
         }}
       >

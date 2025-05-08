@@ -28,6 +28,8 @@ export default function AddProductModal() {
         price: parsedPrice,
         link: productLink,
         wishlistId: idString,
+        isPurchased: false,
+        onDelete: () => {},
       };
       addProductToWishlist(idString, newProduct);
     }

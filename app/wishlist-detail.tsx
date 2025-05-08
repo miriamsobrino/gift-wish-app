@@ -3,13 +3,21 @@ import { View, Pressable, Text, FlatList } from 'react-native';
 import { ThemedView } from '../components/ThemedView';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useWishlistContext } from '../context/WishlistContext';
+import { ProductCard } from '../components/ProductCard';
 
 export default function WishlistDetailScreen() {
   const { title, id } = useLocalSearchParams();
-  const { wishlists } = useWishlistContext();
+  const { wishlists, deleteProduct } = useWishlistContext();
+
   const wishlist = wishlists.find((wishlist) => wishlist.id === id);
+
   const navigationToAddProductModal = () => {
     router.push(`/add-product?id=${id}`);
+  };
+  const handleDeleteProduct = (productId: string) => {
+    if (wishlist) {
+      deleteProduct(wishlist?.id, productId);
+    }
   };
   return (
     <ThemedView>
@@ -25,7 +33,17 @@ export default function WishlistDetailScreen() {
       <FlatList
         data={wishlist?.products}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Text>{item.name}</Text>}
+        renderItem={({ item }) => (
+          <ProductCard
+            name={item.name}
+            price={item.price}
+            link={item.link}
+            id={item.id}
+            wishlistId={wishlist?.id ?? ''}
+            isPurchased={false}
+            onDelete={handleDeleteProduct}
+          />
+        )}
         contentContainerStyle={{
           flex: 1,
           flexDirection: 'column',

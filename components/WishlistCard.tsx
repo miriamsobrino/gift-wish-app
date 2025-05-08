@@ -22,6 +22,10 @@ export function WishlistCard({
   const editWishlist = (item: Wishlist) => {
     router.push(`/add-wishlist?title=${item.title}`);
   };
+
+  const navigationToWishlistDetailScreen = (title: string) => {
+    router.push(`/wishlist-detail?title=${title}&id=${id}`);
+  };
   const handleDeleteWishlist = () => {
     onMenuToggle(id);
     setIsOpenDeleteModal(true);
@@ -29,7 +33,10 @@ export function WishlistCard({
   const { deleteWishlist } = useWishlistContext();
   return (
     <>
-      <Pressable className='flex flex-row  bg-background  z-10 h-36 mt-2 relative rounded-md border-2 border-black items-center justify-between gap-4 shadow-hard-black-large'>
+      <Pressable
+        className='flex flex-row  bg-background  z-10 h-36 mt-2 relative rounded-md border-2 border-black items-center justify-between gap-4 shadow-hard-black-large'
+        onPress={() => navigationToWishlistDetailScreen(title)}
+      >
         <View className='flex flex-row gap-4 items-center'>
           <View
             className=' border-r-2 border-t-2 border-b-2 r rounded-r-none  border-black h-36  items-center flex  justify-center'

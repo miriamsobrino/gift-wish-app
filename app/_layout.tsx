@@ -1,9 +1,9 @@
-import { Stack } from 'expo-router';
-
-import '../global.css';
 import React from 'react';
+import { Stack } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { WishlistContextProvider } from '../context/WishlistContext';
+
+import '../global.css';
 
 export default function RootLayout() {
   return (
@@ -21,7 +21,19 @@ export default function RootLayout() {
             options={{
               headerShown: false,
               presentation: 'fullScreenModal',
-              headerBackButtonDisplayMode: 'minimal',
+            }}
+          />
+          <Stack.Screen
+            name='wishlist-detail'
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name='add-product'
+            options={{
+              headerShown: false,
+              presentation: 'fullScreenModal',
             }}
           />
         </Stack>

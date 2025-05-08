@@ -5,8 +5,8 @@ import { ThemedView } from '../components/ThemedView';
 import { WishlistCard } from '../components/WishlistCard';
 import { useWishlistContext } from '../context/WishlistContext';
 import { FlatList } from 'react-native-gesture-handler';
-import { Wishlist } from '../types/types';
 import { useCallback, useState } from 'react';
+import { ThemedText } from '../components/ThemedText';
 
 export default function HomeScreen() {
   const { wishlists } = useWishlistContext();
@@ -22,10 +22,6 @@ export default function HomeScreen() {
     router.push('/add-wishlist');
   };
 
-  const navigationToEditWishlistModal = (item: Wishlist) => {
-    router.push(`/add-wishlist?title=${item.title}`);
-  };
-
   const handleMenuToggle = (id: string) => {
     if (openMenuId === id) {
       setOpenMenuId(null);
@@ -37,7 +33,7 @@ export default function HomeScreen() {
   return (
     <ThemedView>
       <View className='flex mx-2 flex-row items-center justify-between mt-3 '>
-        <Text className=' py-2 text-3xl font-bold'>Wishlists</Text>
+        <ThemedText type='title'>Wishlists</ThemedText>
         <Pressable onPress={navigationToAddWishlistModal}>
           <Feather name='plus' size={28} color='black' />
         </Pressable>

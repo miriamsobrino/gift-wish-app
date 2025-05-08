@@ -24,13 +24,13 @@ export default function AddWishlistModal() {
     setSelectedColor,
     openEmojiModal,
     closeEmojiModal,
-    backToHome,
+    goBack,
     handleAddWishlist,
   } = useWishlistModal();
 
   return (
     <ThemedView className='px-1'>
-      <Pressable className='justify-end flex items-end ' onPress={backToHome}>
+      <Pressable className='justify-end flex items-end ' onPress={goBack}>
         <MaterialIcons name='close' size={28} color='black' />
       </Pressable>
       <View className='text-center flex justify-betweem gap-8 flex-1 items-center   h-[560px]'>
@@ -75,7 +75,11 @@ export default function AddWishlistModal() {
           ))}
         </View>
 
-        <ThemedInput value={wishlistTitle} onChangeText={setWishlistTitle} />
+        <ThemedInput
+          placeholder='Nombre de la lista...'
+          value={wishlistTitle}
+          onChangeText={setWishlistTitle}
+        />
 
         <ThemedButton onPress={handleAddWishlist}>
           <Text className='text-xl font-bold'>

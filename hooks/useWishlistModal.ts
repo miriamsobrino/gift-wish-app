@@ -25,7 +25,7 @@ export const useWishlistModal = () => {
 
   const openEmojiModal = () => setIsOpenEmojiModal((prev) => !prev);
   const closeEmojiModal = () => setIsOpenEmojiModal(false);
-  const backToHome = () => router.back();
+  const goBack = () => router.back();
 
   const handleAddWishlist = () => {
     if (!wishlistTitle.trim()) return alert('Debes introducir un título');
@@ -42,7 +42,7 @@ export const useWishlistModal = () => {
     setSelectedColor,
     openEmojiModal,
     closeEmojiModal,
-    backToHome,
+    goBack,
     handleAddWishlist,
   };
 };

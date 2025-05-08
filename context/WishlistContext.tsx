@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import { Wishlist } from '../types/types';
+import { Product, Wishlist } from '../types/types';
 import uuid from 'react-native-uuid';
 import { router } from 'expo-router';
 
@@ -7,6 +7,7 @@ interface WishlistContextType {
   wishlists: Wishlist[];
   addWishlist: (title: string, emoji: string, color: string) => void;
   deleteWishlist: (id: string) => void;
+  addProductToWishlist: (wishlistId: string, product: Product) => void;
 }
 const WishlistContext = createContext({} as WishlistContextType);
 export const useWishlistContext = () => {
@@ -23,8 +24,26 @@ export const WishlistContextProvider = ({
       title: title,
       emoji: emoji,
       color: color,
+      products: [],
+      totalPrice: 0,
     };
     setWishlists([newWishlist, ...wishlists]);
+    router.back();
+  };
+  const addProductToWishlist = (wishlistId: string, product: Product) => {
+    setWishlists((prevWishlists) => {
+      const newWishlist = prevWishlists.map((wishlist) =>
+        wishlist.id === wishlistId
+          ? {
+              ...wishlist,
+              products: [...(wishlist.products ?? []), product],
+              totalPrice: (wishlist.totalPrice ?? 0) + product.price,
+            }
+          : wishlist
+      );
+      return newWishlist;
+    });
+    console.log('producto añadido');
     router.back();
   };
 
@@ -38,6 +57,7 @@ export const WishlistContextProvider = ({
         wishlists,
         addWishlist,
         deleteWishlist,
+        addProductToWishlist,
       }}
     >
       {children}

@@ -1,14 +1,22 @@
 import { View, Text, Pressable } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { ThemedView } from '../components/ThemedView';
 import { WishlistCard } from '../components/WishlistCard';
-import { useWishListContext } from '../context/WishlistContext';
+import { useWishlistContext } from '../context/WishlistContext';
 import { FlatList } from 'react-native-gesture-handler';
 import { Wishlist } from '../types/types';
+import { useCallback, useState } from 'react';
 
 export default function HomeScreen() {
-  const { wishlists } = useWishListContext();
+  const { wishlists } = useWishlistContext();
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      setOpenMenuId(null);
+    }, [])
+  );
 
   const navigationToAddWishlistModal = () => {
     router.push('/add-wishlist');
@@ -17,6 +25,15 @@ export default function HomeScreen() {
   const navigationToEditWishlistModal = (item: Wishlist) => {
     router.push(`/add-wishlist?title=${item.title}`);
   };
+
+  const handleMenuToggle = (id: string) => {
+    if (openMenuId === id) {
+      setOpenMenuId(null);
+    } else {
+      setOpenMenuId(id);
+    }
+  };
+
   return (
     <ThemedView>
       <View className='flex mx-2 flex-row items-center justify-between mt-3 '>
@@ -34,7 +51,8 @@ export default function HomeScreen() {
             title={item.title}
             emoji={item.emoji}
             color={item.color}
-            onPress={() => navigationToEditWishlistModal(item)}
+            isOpenMenu={openMenuId === item.id}
+            onMenuToggle={handleMenuToggle}
           />
         )}
         contentContainerStyle={{

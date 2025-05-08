@@ -33,7 +33,7 @@ export default function AddWishlistModal() {
       <Pressable className='justify-end flex items-end ' onPress={backToHome}>
         <MaterialIcons name='close' size={28} color='black' />
       </Pressable>
-      <View className='text-center flex justify-betweem gap-10 flex-1 items-center   h-[560px]'>
+      <View className='text-center flex justify-betweem gap-8 flex-1 items-center   h-[560px]'>
         <ThemedText type='title'>
           {title ? 'Editar Wishlist' : 'Nueva Wishlist'}
         </ThemedText>
@@ -55,10 +55,12 @@ export default function AddWishlistModal() {
                 boxShadow: '7px 7px black',
                 borderColor: 'black',
                 borderWidth: 2,
+                backgroundColor: 'white',
                 maxHeight: 320,
                 minHeight: 320,
-                borderRadius: 0,
+                borderRadius: 10,
               }}
+              emojiSize={36}
             />
           </Animated.View>
         )}

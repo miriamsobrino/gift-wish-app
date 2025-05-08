@@ -1,16 +1,15 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { WISHLIST_COLORS } from '../constants/colors';
-import { useWishListContext } from '../context/WishlistContext';
+import { useWishlistContext } from '../context/WishlistContext';
 
 export const useWishlistModal = () => {
   const { title } = useLocalSearchParams();
-  const { wishlists } = useWishListContext();
+  const { wishlists, addWishlist } = useWishlistContext();
   const [wishlistTitle, setWishlistTitle] = useState('');
   const [selectedEmoji, setSelectedEmoji] = useState('🎁');
   const [selectedColor, setSelectedColor] = useState(WISHLIST_COLORS[0]);
   const [isOpenEmojiModal, setIsOpenEmojiModal] = useState(false);
-  const { addWishlist } = useWishListContext();
 
   useEffect(() => {
     const wishlistTitle = Array.isArray(title) ? title[0] : title;

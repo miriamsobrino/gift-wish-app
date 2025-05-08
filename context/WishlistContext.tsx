@@ -3,16 +3,17 @@ import { Wishlist } from '../types/types';
 import uuid from 'react-native-uuid';
 import { router } from 'expo-router';
 
-interface WishListContextType {
+interface WishlistContextType {
   wishlists: Wishlist[];
   addWishlist: (title: string, emoji: string, color: string) => void;
+  deleteWishlist: (id: string) => void;
 }
-const WishListContext = createContext({} as WishListContextType);
-export const useWishListContext = () => {
-  const context = useContext(WishListContext);
+const WishlistContext = createContext({} as WishlistContextType);
+export const useWishlistContext = () => {
+  const context = useContext(WishlistContext);
   return context;
 };
-export const WishListContextProvider = ({
+export const WishlistContextProvider = ({
   children,
 }: React.PropsWithChildren) => {
   const [wishlists, setWishlists] = useState<Wishlist[]>([]);
@@ -26,14 +27,20 @@ export const WishListContextProvider = ({
     setWishlists([newWishlist, ...wishlists]);
     router.back();
   };
+
+  const deleteWishlist = (id: string) => {
+    const filteredWishlists = wishlists.filter((w) => w.id !== id);
+    setWishlists(filteredWishlists);
+  };
   return (
-    <WishListContext.Provider
+    <WishlistContext.Provider
       value={{
         wishlists,
         addWishlist,
+        deleteWishlist,
       }}
     >
       {children}
-    </WishListContext.Provider>
+    </WishlistContext.Provider>
   );
 };

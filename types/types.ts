@@ -5,5 +5,6 @@ export interface Wishlist {
   color: string;
   products?: [];
   totalPrice?: number;
-  onPress?: (title: string) => void;
+  isOpenMenu?: boolean;
+  onMenuToggle?: (id: string) => void;
 }

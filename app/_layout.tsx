@@ -3,12 +3,12 @@ import { Stack } from 'expo-router';
 import '../global.css';
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { WishListContextProvider } from '../context/WishlistContext';
+import { WishlistContextProvider } from '../context/WishlistContext';
 
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <WishListContextProvider>
+      <WishlistContextProvider>
         <Stack>
           <Stack.Screen
             name='index'
@@ -25,7 +25,7 @@ export default function RootLayout() {
             }}
           />
         </Stack>
-      </WishListContextProvider>
+      </WishlistContextProvider>
     </GestureHandlerRootView>
   );
 }

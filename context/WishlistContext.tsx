@@ -57,16 +57,27 @@ export const WishlistContextProvider = ({
     setWishlists((prevWishlists) => {
       return prevWishlists.map((wishlist) => {
         if (wishlist.id === wishlistId) {
-          if (wishlist.products) {
-            wishlist.products = wishlist.products.filter(
-              (product) => product.id !== productId
-            );
+          const filteredProducts = wishlist?.products?.filter(
+            (product) => product.id !== productId
+          );
+
+          let newTotalPrice = 0;
+          if (filteredProducts) {
+            for (let i = 0; i < filteredProducts?.length; i++) {
+              newTotalPrice += filteredProducts[i].price;
+            }
           }
+          return {
+            ...wishlist,
+            products: filteredProducts,
+            totalPrice: newTotalPrice,
+          };
         }
         return wishlist;
       });
     });
   };
+
   return (
     <WishlistContext.Provider
       value={{

@@ -19,6 +19,8 @@ export function WishlistCard({
   onMenuToggle: (id: string) => void;
 }) {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const { wishlists } = useWishlistContext();
+  const wishlist = wishlists.find((w) => w.id === id);
   const editWishlist = (item: Wishlist) => {
     router.push(`/add-wishlist?title=${item.title}`);
   };
@@ -47,9 +49,11 @@ export function WishlistCard({
           <View className='flex flex-col gap-2'>
             <Text className='text-2xl font-bold'>{title}</Text>
             <Text className='text-xl '>
-              Nº productos: {products?.length ?? 0}
+              Productos: {wishlist?.products?.length ?? 0}
             </Text>
-            <Text className='text-xl '>Precio total: {totalPrice ?? `0€`}</Text>
+            <Text className='text-xl '>
+              Total: {wishlist?.totalPrice ?? `0€`}€
+            </Text>
           </View>
         </View>
         <Pressable onPress={() => onMenuToggle(id)} className='py-4 px-2'>

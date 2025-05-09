@@ -26,6 +26,7 @@ export default function AddWishlistModal() {
     closeEmojiModal,
     goBack,
     handleAddWishlist,
+    handleUpdateWishlist,
   } = useWishlistModal();
 
   return (
@@ -81,7 +82,9 @@ export default function AddWishlistModal() {
           onChangeText={setWishlistTitle}
         />
 
-        <ThemedButton onPress={handleAddWishlist}>
+        <ThemedButton
+          onPress={title ? handleUpdateWishlist : handleAddWishlist}
+        >
           <Text className='text-xl font-bold'>
             {title ? 'Actualizar Wishlist' : 'Crear Wishlist'}
           </Text>

@@ -4,8 +4,8 @@ import { WISHLIST_COLORS } from '../constants/colors';
 import { useWishlistContext } from '../context/WishlistContext';
 
 export const useWishlistModal = () => {
-  const { title } = useLocalSearchParams();
-  const { wishlists, addWishlist } = useWishlistContext();
+  const { title, id } = useLocalSearchParams();
+  const { wishlists, addWishlist, updateWishlist } = useWishlistContext();
   const [wishlistTitle, setWishlistTitle] = useState('');
   const [selectedEmoji, setSelectedEmoji] = useState('🎁');
   const [selectedColor, setSelectedColor] = useState(WISHLIST_COLORS[0]);
@@ -32,6 +32,9 @@ export const useWishlistModal = () => {
     addWishlist(wishlistTitle, selectedEmoji, selectedColor);
   };
 
+  const handleUpdateWishlist = () => {
+    updateWishlist(id as string, wishlistTitle, selectedEmoji, selectedColor);
+  };
   return {
     selectedEmoji,
     isOpenEmojiModal,
@@ -44,5 +47,6 @@ export const useWishlistModal = () => {
     closeEmojiModal,
     goBack,
     handleAddWishlist,
+    handleUpdateWishlist,
   };
 };

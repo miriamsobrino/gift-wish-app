@@ -22,7 +22,7 @@ export function WishlistCard({
   const { wishlists } = useWishlistContext();
   const wishlist = wishlists.find((w) => w.id === id);
   const editWishlist = (item: Wishlist) => {
-    router.push(`/add-wishlist?title=${item.title}`);
+    router.push(`/add-wishlist?title=${item.title}&id=${id}`);
   };
 
   const navigationToWishlistDetailScreen = (title: string) => {

@@ -1,11 +1,18 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { Product, Wishlist } from '../types/types';
 import uuid from 'react-native-uuid';
 import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface WishlistContextType {
   wishlists: Wishlist[];
   addWishlist: (title: string, emoji: string, color: string) => void;
+  updateWishlist: (
+    id: string,
+    title: string,
+    emoji: string,
+    color: string
+  ) => void;
   deleteWishlist: (id: string) => void;
   addProductToWishlist: (wishlistId: string, product: Product) => void;
   deleteProduct: (wishlistId: string, productId: string) => void;
@@ -19,27 +26,71 @@ export const WishlistContextProvider = ({
   children,
 }: React.PropsWithChildren) => {
   const [wishlists, setWishlists] = useState<Wishlist[]>([]);
-  const addWishlist = (title: string, emoji: string, color: string) => {
-    const newWishlist = {
-      id: uuid.v4(),
-      title: title,
-      emoji: emoji,
-      color: color,
-      products: [],
-      totalPrice: 0,
-    };
-    setWishlists([newWishlist, ...wishlists]);
-    router.back();
+
+  const addWishlist = async (title: string, emoji: string, color: string) => {
+    try {
+      const newWishlist = {
+        id: uuid.v4(),
+        title: title,
+        emoji: emoji,
+        color: color,
+        products: [],
+        totalPrice: 0,
+      };
+      const updatedWishlists = [newWishlist, ...wishlists];
+      setWishlists(updatedWishlists);
+      await AsyncStorage.setItem('wishlists', JSON.stringify(updatedWishlists));
+      router.back();
+    } catch (error) {
+      console.error('Error al añadir wishlist en AsyncStorage:', error);
+    }
   };
 
-  const deleteWishlist = (id: string) => {
-    const filteredWishlists = wishlists.filter((w) => w.id !== id);
-    setWishlists(filteredWishlists);
-  };
-
-  const addProductToWishlist = (wishlistId: string, product: Product) => {
+  const updateWishlist = async (
+    id: string,
+    title: string,
+    emoji: string,
+    color: string
+  ) => {
+    let updatedWishlists: Wishlist[] = [];
     setWishlists((prevWishlists) => {
-      const newWishlist = prevWishlists.map((wishlist) =>
+      const updatedWishlists = prevWishlists.map((wishlist) =>
+        wishlist.id === id
+          ? {
+              ...wishlist,
+              title: title,
+              emoji: emoji,
+              color: color,
+            }
+          : wishlist
+      );
+
+      return updatedWishlists;
+    });
+    try {
+      await AsyncStorage.setItem('wishlists', JSON.stringify(updatedWishlists));
+      router.back();
+    } catch (error) {
+      console.error('Error al actualizar wishlist en AsyncStorage:', error);
+    }
+  };
+
+  const deleteWishlist = async (id: string) => {
+    try {
+      const filteredWishlists = wishlists.filter((w) => w.id !== id);
+      setWishlists(filteredWishlists);
+      await AsyncStorage.setItem(
+        'wishlists',
+        JSON.stringify(filteredWishlists)
+      );
+    } catch (error) {
+      console.error('Error al eliminar wishlist de AsyncStorage:', error);
+    }
+  };
+
+  const addProductToWishlist = async (wishlistId: string, product: Product) => {
+    try {
+      const updatedWishlists = wishlists.map((wishlist) =>
         wishlist.id === wishlistId
           ? {
               ...wishlist,
@@ -48,14 +99,20 @@ export const WishlistContextProvider = ({
             }
           : wishlist
       );
-      return newWishlist;
-    });
+      setWishlists(updatedWishlists);
 
-    router.back();
+      await AsyncStorage.setItem('wishlists', JSON.stringify(updatedWishlists));
+      router.back();
+    } catch (error) {
+      console.error(
+        'Error al añadir producto a la wishlist en AsyncStorage:',
+        error
+      );
+    }
   };
-  const deleteProduct = (wishlistId: string, productId: string) => {
-    setWishlists((prevWishlists) => {
-      return prevWishlists.map((wishlist) => {
+  const deleteProduct = async (wishlistId: string, productId: string) => {
+    try {
+      const updatedWishlists = wishlists.map((wishlist) => {
         if (wishlist.id === wishlistId) {
           const filteredProducts = wishlist?.products?.filter(
             (product) => product.id !== productId
@@ -75,14 +132,31 @@ export const WishlistContextProvider = ({
         }
         return wishlist;
       });
-    });
+      setWishlists(updatedWishlists);
+      await AsyncStorage.setItem('wishlists', JSON.stringify(updatedWishlists));
+    } catch (error) {
+      console.error(
+        'Error al eliminar producto de la wishlist en AsyncStorage:',
+        error
+      );
+    }
   };
+  const loadWishlists = async () => {
+    const storedWishlists = await AsyncStorage.getItem('wishlists');
+    if (storedWishlists) {
+      setWishlists(JSON.parse(storedWishlists));
+    }
+  };
+  useEffect(() => {
+    loadWishlists();
+  }, [wishlists]);
 
   return (
     <WishlistContext.Provider
       value={{
         wishlists,
         addWishlist,
+        updateWishlist,
         deleteWishlist,
         addProductToWishlist,
         deleteProduct,

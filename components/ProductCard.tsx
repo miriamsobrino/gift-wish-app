@@ -3,6 +3,8 @@ import { Product } from '../types/types';
 import { ThemedButton } from './ThemedButton';
 import { Feather, Fontisto, MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
+import { useWishlistContext } from '../context/WishlistContext';
+import { ThemedText } from './ThemedText';
 
 export function ProductCard({
   id,
@@ -10,10 +12,12 @@ export function ProductCard({
   price,
   link,
   isPurchased,
+  wishlistId,
   onDelete,
 }: Product & { onDelete: (id: string) => void }) {
   const [purchased, setPurchased] = useState(isPurchased);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const { updateProduct } = useWishlistContext();
 
   const handleOpenLink = () => {
     if (link) {
@@ -22,7 +26,9 @@ export function ProductCard({
     }
   };
   const handleTogglePurchased = () => {
-    setPurchased(!purchased);
+    const newStatus = !purchased;
+    setPurchased(newStatus);
+    updateProduct(wishlistId, id, newStatus);
   };
 
   const handleDeleteProduct = () => {
@@ -35,22 +41,27 @@ export function ProductCard({
         purchased ? 'opacity-50' : 'opacity-100'
       }`}
     >
-      <View className='flex flex-row gap-4 items-center'>
-        <ThemedButton
-          className=' p-2  w-12 h-12'
+      <View className='flex flex-row gap-4 items-center justify-center'>
+        <Pressable
+          className='  p-1 w-12 h-12 border-2 border-black shadow-hard-black-small bg-background rounded-md items-center justify-center'
           onPress={handleTogglePurchased}
         >
           {purchased ? <Feather name='check' size={24} color='black' /> : null}
-        </ThemedButton>
+        </Pressable>
         <View>
-          <Text className='text-2xl font-bold'>{name}</Text>
-          <Text className='text-xl '>{price}€</Text>
+          <ThemedText type='subtitle' className='text-2xl font-bold'>
+            {name}
+          </ThemedText>
+          <ThemedText className='text-xl '>{price.toFixed(2)}€</ThemedText>
         </View>
       </View>
       <View className='flex flex-row gap-6'>
-        <ThemedButton className='p-2 bg-blue-300' onPress={handleOpenLink}>
-          <Fontisto name='link' size={24} color='black' />
-        </ThemedButton>
+        {link && (
+          <ThemedButton className='p-2 bg-blue-300' onPress={handleOpenLink}>
+            <Fontisto name='link' size={24} color='black' />
+          </ThemedButton>
+        )}
+
         <ThemedButton
           className='p-2 bg-red-400'
           onPress={() => setIsOpenDeleteModal(true)}
@@ -68,21 +79,23 @@ export function ProductCard({
       >
         <View className='flex-1 justify-center items-center bg-black/30 '>
           <View className='bg-background border-2 border-black shadow-hard-black-small p-10 flex flex-col gap-4 items-center'>
-            <Text className='text-xl font-bold'>
+            <ThemedText type='subtitle' className='text-xl'>
               ¿Eliminar el producto {name}?
-            </Text>
+            </ThemedText>
             <View className='flex flex-row gap-4'>
               <ThemedButton
                 onPress={() => setIsOpenDeleteModal(false)}
                 className='w-36'
               >
-                <Text className='text-lg'>Cancelar</Text>
+                <ThemedText>Cancelar</ThemedText>
               </ThemedButton>
               <ThemedButton
                 className='bg-red-400 w-36'
                 onPress={handleDeleteProduct}
               >
-                <Text className='text-lg'>Aceptar</Text>
+                <ThemedText type='subtitle' className='text-xl'>
+                  Aceptar
+                </ThemedText>
               </ThemedButton>
             </View>
           </View>

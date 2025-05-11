@@ -1,9 +1,10 @@
 import { Feather, MaterialIcons } from '@expo/vector-icons';
-import { View, Pressable, Text, FlatList } from 'react-native';
+import { View, Pressable, FlatList } from 'react-native';
 import { ThemedView } from '../components/ThemedView';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useWishlistContext } from '../context/WishlistContext';
 import { ProductCard } from '../components/ProductCard';
+import { ThemedText } from '../components/ThemedText';
 
 export default function WishlistDetailScreen() {
   const { title, id } = useLocalSearchParams();
@@ -25,7 +26,7 @@ export default function WishlistDetailScreen() {
         <Pressable onPress={() => router.dismiss()}>
           <MaterialIcons name='arrow-back-ios' size={24} color='black' />
         </Pressable>
-        <Text className=' py-2 text-3xl font-bold'>{title}</Text>
+        <ThemedText type='title'>{title}</ThemedText>
         <Pressable onPress={navigationToAddProductModal}>
           <Feather name='plus' size={28} color='black' />
         </Pressable>
@@ -40,7 +41,7 @@ export default function WishlistDetailScreen() {
             link={item.link}
             id={item.id}
             wishlistId={wishlist?.id ?? ''}
-            isPurchased={false}
+            isPurchased={item.isPurchased}
             onDelete={handleDeleteProduct}
           />
         )}

@@ -10,11 +10,11 @@ export function ThemedText({ children, className, type = 'text' }: Props) {
     <Text
       className={`${
         type === 'title'
-          ? 'text-3xl font-bold'
+          ? 'text-4xl  font-manropeBold '
           : type === 'subtitle'
-          ? 'text-2xl font-semibold'
-          : 'text-xl '
-      } ${className}`}
+          ? 'text-2xl  font-manropeBold '
+          : 'text-xl font-manropeRegular '
+      } ${className} `}
     >
       {children}
     </Text>

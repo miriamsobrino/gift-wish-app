@@ -16,6 +16,10 @@ module.exports = {
         'hard-black-large': '8px 8px black',
         'hard-black-small': '5px 5px black',
       },
+      fontFamily: {
+        manropeBold: ['Manrope-Bold', 'sans-serif'],
+        manropeRegular: ['Manrope-Regular', 'sans-serif'],
+      },
     },
   },
   plugins: [],

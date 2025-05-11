@@ -15,6 +15,11 @@ interface WishlistContextType {
   ) => void;
   deleteWishlist: (id: string) => void;
   addProductToWishlist: (wishlistId: string, product: Product) => void;
+  updateProduct: (
+    wishlistId: string,
+    productId: string,
+    isPurchased: boolean
+  ) => void;
   deleteProduct: (wishlistId: string, productId: string) => void;
 }
 const WishlistContext = createContext({} as WishlistContextType);
@@ -110,6 +115,33 @@ export const WishlistContextProvider = ({
       );
     }
   };
+
+  const updateProduct = async (
+    wishlistId: string,
+    productId: string,
+    isPurchased: boolean
+  ) => {
+    try {
+      const updatedWishlists = wishlists.map((wishlist) =>
+        wishlist.id === wishlistId
+          ? {
+              ...wishlist,
+              products: wishlist?.products?.map((product) =>
+                product.id === productId ? { ...product, isPurchased } : product
+              ),
+            }
+          : wishlist
+      );
+      setWishlists(updatedWishlists);
+
+      await AsyncStorage.setItem('wishlists', JSON.stringify(updatedWishlists));
+    } catch (error) {
+      console.error(
+        'Error al añadir producto a la wishlist en AsyncStorage:',
+        error
+      );
+    }
+  };
   const deleteProduct = async (wishlistId: string, productId: string) => {
     try {
       const updatedWishlists = wishlists.map((wishlist) => {
@@ -159,6 +191,7 @@ export const WishlistContextProvider = ({
         updateWishlist,
         deleteWishlist,
         addProductToWishlist,
+        updateProduct,
         deleteProduct,
       }}
     >

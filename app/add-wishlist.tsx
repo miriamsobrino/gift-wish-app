@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { ThemedView } from '../components/ThemedView';
 import { ThemedButton } from '../components/ThemedButton';
 import { ThemedText } from '../components/ThemedText';
@@ -85,9 +85,9 @@ export default function AddWishlistModal() {
         <ThemedButton
           onPress={title ? handleUpdateWishlist : handleAddWishlist}
         >
-          <Text className='text-xl font-bold'>
+          <ThemedText type='subtitle' className='text-xl'>
             {title ? 'Actualizar Wishlist' : 'Crear Wishlist'}
-          </Text>
+          </ThemedText>
         </ThemedButton>
       </View>
     </ThemedView>

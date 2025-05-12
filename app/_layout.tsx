@@ -13,8 +13,8 @@ SplashScreen.setOptions({
 });
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    'Manrope-Bold': require('../assets/fonts/Manrope-Bold.ttf'),
-    'Manrope-Regular': require('../assets/fonts/Manrope-Regular.ttf'),
+    'Poppins-SemiBold': require('../assets/fonts/Poppins-SemiBold.ttf'),
+    'Poppins-Light': require('../assets/fonts/Poppins-Light.ttf'),
   });
 
   useEffect(() => {

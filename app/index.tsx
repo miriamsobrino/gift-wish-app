@@ -32,9 +32,9 @@ export default function HomeScreen() {
 
   return (
     <ThemedView>
-      <View className='flex mx-2 flex-row items-center justify-between mt-3 '>
+      <View className='flex mx-2 flex-row  justify-between items-start mt-3 '>
         <ThemedText type='title'>Wishlists</ThemedText>
-        <Pressable onPress={navigationToAddWishlistModal}>
+        <Pressable onPress={navigationToAddWishlistModal} className='-mt-1'>
           <Feather name='plus' size={28} color='black' />
         </Pressable>
       </View>

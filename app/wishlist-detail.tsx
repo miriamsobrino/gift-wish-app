@@ -22,11 +22,18 @@ export default function WishlistDetailScreen() {
   };
   return (
     <ThemedView>
-      <View className='flex mx-2 flex-row items-center justify-between mt-3 '>
+      <View className='flex mx-2 flex-row items-start justify-between mt-3 '>
         <Pressable onPress={() => router.dismiss()}>
-          <MaterialIcons name='arrow-back-ios' size={24} color='black' />
+          <MaterialIcons
+            name='arrow-back-ios'
+            size={24}
+            color='black'
+            className='mt-1'
+          />
         </Pressable>
-        <ThemedText type='title'>{title}</ThemedText>
+        <ThemedText type='title' className='text-2xl'>
+          {title}
+        </ThemedText>
         <Pressable onPress={navigationToAddProductModal}>
           <Feather name='plus' size={28} color='black' />
         </Pressable>

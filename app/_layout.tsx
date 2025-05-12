@@ -9,7 +9,7 @@ import '../global.css';
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
   duration: 5000,
-  fade: true,
+  fade: false,
 });
 export default function RootLayout() {
   const [loaded, error] = useFonts({

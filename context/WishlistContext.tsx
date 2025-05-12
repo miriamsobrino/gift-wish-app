@@ -57,21 +57,19 @@ export const WishlistContextProvider = ({
     emoji: string,
     color: string
   ) => {
-    let updatedWishlists: Wishlist[] = [];
-    setWishlists((prevWishlists) => {
-      const updatedWishlists = prevWishlists.map((wishlist) =>
-        wishlist.id === id
-          ? {
-              ...wishlist,
-              title: title,
-              emoji: emoji,
-              color: color,
-            }
-          : wishlist
-      );
+    const updatedWishlists = wishlists.map((wishlist) =>
+      wishlist.id === id
+        ? {
+            ...wishlist,
+            title: title,
+            emoji: emoji,
+            color: color,
+          }
+        : wishlist
+    );
 
-      return updatedWishlists;
-    });
+    setWishlists(updatedWishlists);
+
     try {
       await AsyncStorage.setItem('wishlists', JSON.stringify(updatedWishlists));
       router.back();

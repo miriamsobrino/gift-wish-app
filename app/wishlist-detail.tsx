@@ -38,27 +38,33 @@ export default function WishlistDetailScreen() {
           <Feather name='plus' size={28} color='black' />
         </Pressable>
       </View>
-      <FlatList
-        data={wishlist?.products}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <ProductCard
-            name={item.name}
-            price={item.price}
-            link={item.link}
-            id={item.id}
-            wishlistId={wishlist?.id ?? ''}
-            isPurchased={item.isPurchased}
-            onDelete={handleDeleteProduct}
-          />
-        )}
-        contentContainerStyle={{
-          flex: 1,
-          flexDirection: 'column',
-          gap: 20,
-          paddingHorizontal: 8,
-        }}
-      />
+      {wishlist!.products!.length > 0 ? (
+        <FlatList
+          data={wishlist?.products}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <ProductCard
+              name={item.name}
+              price={item.price}
+              link={item.link}
+              id={item.id}
+              wishlistId={wishlist?.id ?? ''}
+              isPurchased={item.isPurchased}
+              onDelete={handleDeleteProduct}
+            />
+          )}
+          contentContainerStyle={{
+            flex: 1,
+            flexDirection: 'column',
+            gap: 20,
+            paddingHorizontal: 8,
+          }}
+        />
+      ) : (
+        <ThemedText type='text' className='text-xl px-2'>
+          Aún no has añadido ningún producto.
+        </ThemedText>
+      )}
     </ThemedView>
   );
 }

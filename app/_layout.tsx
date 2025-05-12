@@ -8,7 +8,7 @@ import '../global.css';
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
-  duration: 1000,
+  duration: 5000,
   fade: true,
 });
 export default function RootLayout() {

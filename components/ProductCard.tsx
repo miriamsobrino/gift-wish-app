@@ -49,10 +49,12 @@ export function ProductCard({
           {purchased ? <Feather name='check' size={24} color='black' /> : null}
         </Pressable>
         <View>
-          <ThemedText type='subtitle' className='text-2xl font-bold'>
+          <ThemedText type='subtitle' className='text-xl font-bold'>
             {name}
           </ThemedText>
-          <ThemedText className='text-xl '>{price.toFixed(2)}€</ThemedText>
+          <ThemedText type='text' className='text-md '>
+            {price.toFixed(2)}€
+          </ThemedText>
         </View>
       </View>
       <View className='flex flex-row gap-6'>

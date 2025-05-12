@@ -38,26 +38,33 @@ export default function HomeScreen() {
           <Feather name='plus' size={28} color='black' />
         </Pressable>
       </View>
-      <FlatList
-        data={wishlists}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <WishlistCard
-            id={item.id}
-            title={item.title}
-            emoji={item.emoji}
-            color={item.color}
-            isOpenMenu={openMenuId === item.id}
-            onMenuToggle={handleMenuToggle}
-          />
-        )}
-        contentContainerStyle={{
-          flex: 1,
-          flexDirection: 'column',
-          gap: 20,
-          paddingHorizontal: 8,
-        }}
-      />
+
+      {wishlists.length > 0 ? (
+        <FlatList
+          data={wishlists}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <WishlistCard
+              id={item.id}
+              title={item.title}
+              emoji={item.emoji}
+              color={item.color}
+              isOpenMenu={openMenuId === item.id}
+              onMenuToggle={handleMenuToggle}
+            />
+          )}
+          contentContainerStyle={{
+            flex: 1,
+            flexDirection: 'column',
+            gap: 20,
+            paddingHorizontal: 8,
+          }}
+        />
+      ) : (
+        <ThemedText type='text' className='text-xl px-2'>
+          Aún no has creado ninguna wishlist.
+        </ThemedText>
+      )}
     </ThemedView>
   );
 }
